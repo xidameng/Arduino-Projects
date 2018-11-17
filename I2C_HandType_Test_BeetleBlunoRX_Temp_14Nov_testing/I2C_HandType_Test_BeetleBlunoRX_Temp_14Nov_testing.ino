@@ -1,0 +1,43 @@
+#include <Wire.h>
+
+char string[4]="12.3";
+int i = 0;
+
+void setup() {
+
+  Serial.begin(115200);
+  Wire.begin(9);
+  Wire.onRequest(requestEvent);
+}
+
+void loop() {
+
+  i = 0;
+  
+  while(Serial.available()&&i<4)
+  {
+//  Serial.println("Data available at Serial port!");
+    
+    string[i] = (char)Serial.read();
+    i++;
+//  Serial.println(i);
+    
+//    if(i == 4)
+//    {
+//      Serial.print("Received a string from Serial:");
+//      Serial.println(string);
+//    }
+  }
+}
+
+
+
+// I2C: data requested from master
+void requestEvent() {
+   for( char t = 0; t <4; t++){
+   Wire.write(string[t]);  /*send string to master on request */
+  }
+  Serial.println(string);
+}
+
+//end
